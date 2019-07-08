@@ -15,12 +15,10 @@ class ReservationRoom(
         var reservation: Reservation,
 
         @ManyToOne
-        var room: Room
-
-
+        var roomType: RoomType
 
 ) : BaseEntity() {
         override fun toString(): String {
-                return "ReservationRoom(amount=$amount, reservation=$reservation, room=$room)"
+                return "ReservationRoom(amount=$amount, reservation=${reservation.id}, roomType=${roomType.code})"
         }
 }

@@ -27,7 +27,7 @@ class Reservation(
         var endDate: LocalDate,
 
         @OneToMany(mappedBy = "reservation")
-        var rooms: MutableList<ReservationRoom>?
+        var rooms: MutableList<ReservationRoom>
 
 
 

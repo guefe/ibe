@@ -1,9 +1,10 @@
 package com.cen.ibe.model
 
+import java.math.BigDecimal
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.FetchType
-import javax.persistence.OneToMany
+import javax.persistence.OneToOne
 
 @Entity
 class RoomType(
@@ -17,11 +18,23 @@ class RoomType(
         @Column(nullable = false)
         var capacity: Int,
 
-        @OneToMany(mappedBy = "roomType", fetch = FetchType.LAZY)
-        var preferredRoomConf: MutableList<PreferredRoomConf>
+        @Column(nullable = false)
+        var quantity: Int,
+
+        @Column
+        var adultPrice: BigDecimal,
+
+        @Column
+        var juniorPrice: BigDecimal,
+
+        @Column
+        var babyPrice: BigDecimal,
+
+        @OneToOne(mappedBy = "roomType", fetch = FetchType.LAZY)
+        var standardOccupancy: StandardOccupancy
 
 ) : BaseEntity() {
         override fun toString(): String {
-                return "RoomType(name='$name', code='$code', capacity=$capacity, preferredRoomConf=$preferredRoomConf)"
+                return "RoomType(name='$name', code='$code', capacity=$capacity, adultPrice=$adultPrice, juniorPrice=$juniorPrice, babyPrice=$babyPrice, standardOccupancy=$standardOccupancy)"
         }
 }
