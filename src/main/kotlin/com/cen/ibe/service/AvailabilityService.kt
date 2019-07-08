@@ -72,6 +72,7 @@ class AvailabilityService @Autowired constructor(
             roomTypes.add(RoomTypeDTO(room.roomType.code, room.roomType.name, occupancy))
         }
         return roomTypes
+
     }
 
 }
