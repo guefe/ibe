@@ -6,6 +6,7 @@ plugins {
 	kotlin("jvm") version "1.3.31"
 	kotlin("plugin.spring") version "1.3.31"
 	kotlin("plugin.jpa") version "1.3.31"
+	kotlin("plugin.allopen") version "1.2.71"
 
 }
 

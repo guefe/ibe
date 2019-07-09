@@ -1,6 +1,7 @@
+create schema ibe;
 create table ibe.room_type
 (
-    id           int
+    id           serial
         constraint room_type_pk
             primary key,
     name         varchar(32)   not null,
@@ -15,7 +16,7 @@ create table ibe.room_type
 
 create table ibe.standard_occupancy
 (
-    id           int
+    id           serial
         constraint standard_occupancy_pk
             primary key,
     room_type_id int not null
@@ -28,23 +29,26 @@ create table ibe.standard_occupancy
 
 create table ibe.reservation
 (
-    id int
+    id                 serial
         constraint reservation_pk
             primary key,
-    reference varchar(8) not null,
-    total_amount decimal(8,2),
+    reference          varchar(8) not null,
+    total_amount       decimal(8,2),
     customer_full_name varchar(256),
-    customer_email varchar(256),
-    start_date date default CURRENT_DATE not null,
-    end_date date default CURRENT_DATE not null
+    customer_email     varchar(256),
+    start_date         date default CURRENT_DATE not null,
+    end_date           date default CURRENT_DATE not null
 );
 
 create table ibe.reservation_room
 (
-    id             int
+    id             serial
         constraint reservation_room_pk
             primary key,
     amount         numeric(8,2) not null,
+    adults         int          not null default 0,
+    juniors        int          not null default 0,
+    babies         int          not null default 0,
     room_type_id   int          not null
         constraint reservation_room_room_type_id_fk
             references ibe.room_type,
@@ -55,7 +59,7 @@ create table ibe.reservation_room
 
 create table ibe.reservation_room_occupancy
 (
-    id                  int
+    id                  serial
         constraint reservation_room_occupancy_pk
             primary key,
     adults              int not null default 0,

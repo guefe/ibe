@@ -1,6 +1,6 @@
 package com.cen.ibe.dto.request
 
-import com.cen.ibe.dto.RoomTypeDTO
+import com.cen.ibe.dto.OccupancyDTO
 import java.time.LocalDate
 
 data class ReservationRequestDTO(
@@ -8,6 +8,10 @@ data class ReservationRequestDTO(
         val endDate: LocalDate,
         val customerMail: String,
         val customerFullName: String,
-        val roomTypes: List<RoomTypeDTO>
+        val roomTypes: List<RoomTypeRequestDTO>
 )
 
+data class RoomTypeRequestDTO(
+        val roomTypeCode: String,
+        val occupancy: OccupancyDTO
+)

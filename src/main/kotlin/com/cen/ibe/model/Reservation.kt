@@ -2,12 +2,11 @@ package com.cen.ibe.model
 
 import java.math.BigDecimal
 import java.time.LocalDate
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.OneToMany
+import javax.persistence.*
 
 @Entity
 class Reservation(
+
         @Column
         var reference: String,
 
@@ -30,8 +29,11 @@ class Reservation(
         var rooms: MutableList<ReservationRoom>
 
 
+) {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        var id: Int? = null
 
-) : BaseEntity() {
         override fun toString(): String {
                 return "Reservation(reference='$reference', totalAmount=$totalAmount, customerFullName='$customerFullName', customerEmail='$customerEmail', startDate=$startDate, endDate=$endDate, rooms=$rooms)"
         }

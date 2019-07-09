@@ -1,8 +1,10 @@
 package com.cen.ibe.dto.response
 
+import com.cen.ibe.config.MoneySerializer
 import com.cen.ibe.dto.OccupancyDTO
 import com.cen.ibe.model.RoomType
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -14,6 +16,7 @@ data class AvailabilityRoomTypeDTO(
         val roomTypeCode: String,
         val roomTypeName: String,
         val occupancy: AvailabilityOccupancyDTO,
+        @JsonSerialize(using = MoneySerializer::class)
         val amount: BigDecimal,
         val roomsAvailable: Int
 ) {
