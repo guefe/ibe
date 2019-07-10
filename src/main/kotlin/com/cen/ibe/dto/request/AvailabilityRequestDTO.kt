@@ -9,4 +9,6 @@ data class AvailabilityRequestDTO(
         val startDate: LocalDate,
         val endDate: LocalDate,
         val occupancy: List<OccupancyDTO> ?
-)
+) {
+    fun validate(): Boolean = startDate.isAfter(LocalDate.now()) && startDate.isBefore(endDate)
+}

@@ -70,3 +70,18 @@ create table ibe.reservation_room_occupancy
             references ibe.reservation_room
 );
 
+CREATE TYPE restriction_type AS ENUM ('CHECK_IN_DATE', 'CHECK_OUT_DATE');
+
+create table ibe.availability_restriction
+(
+    id          serial
+        constraint availability_restriction_pk
+            primary key,
+    type        restriction_type          not null,
+    start_date  date default CURRENT_DATE not null,
+    end_date    date,
+    day_of_week int,
+    min_days    int
+);
+
+

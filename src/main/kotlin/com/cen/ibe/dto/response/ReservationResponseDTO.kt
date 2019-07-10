@@ -20,13 +20,15 @@ data class ReservationResponseDTO(
 
 ) {
     constructor(reservation: Reservation) :
-            this(reservation.reference,
+            this(
+                    reservation.reference,
                     reservation.startDate,
                     reservation.endDate,
                     reservation.totalAmount,
                     reservation.customerFullName,
                     reservation.customerEmail,
-                    reservation.rooms.map { ReservationRoomTypeDTO(it) })
+                    reservation.rooms.map { ReservationRoomTypeDTO(it) }
+            )
 
 
 }
@@ -36,8 +38,16 @@ data class ReservationRoomTypeDTO(
         val roomTypeName: String,
         val occupancy: OccupancyDTO,
         @JsonSerialize(using = MoneySerializer::class)
-        val amount: BigDecimal) {
+        val amount: BigDecimal
+) {
+
     constructor(reservationRoom: ReservationRoom) :
-            this(reservationRoom.roomType.code, reservationRoom.roomType.name,
-                    OccupancyDTO(reservationRoom.adults, reservationRoom.juniors, reservationRoom.babies), reservationRoom.amount)
+            this(
+                    reservationRoom.roomType.code,
+                    reservationRoom.roomType.name,
+                    OccupancyDTO(reservationRoom.adults,
+                            reservationRoom.juniors,
+                            reservationRoom.babies),
+                    reservationRoom.amount
+            )
 }

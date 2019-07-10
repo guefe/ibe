@@ -1,5 +1,6 @@
 package com.cen.ibe.service
 
+import com.cen.ibe.controller.ReservationNoAvailabilityException
 import com.cen.ibe.dto.request.AvailabilityRequestDTO
 import com.cen.ibe.dto.request.ReservationFilterDTO
 import com.cen.ibe.dto.request.ReservationRequestDTO
@@ -32,6 +33,11 @@ class ReservationService @Autowired constructor(
         return ReservationResponseDTO(reservationRepository.findByReference(filter.reference))
     }
 
+    /**
+     * Checks the availability for the requested dates and occupancy, throwing an exception (later translated as
+     * a response in the controller layer).
+     * With the availability response, makes a reservation with each requested room
+     */
     fun makeReservation(request: ReservationRequestDTO): ReservationResponseDTO {
         val availabilityRequest = AvailabilityRequestDTO(
                 request.startDate,
@@ -39,7 +45,7 @@ class ReservationService @Autowired constructor(
                 request.roomTypes.map { it.occupancy })
         val availabilityResponse = availabilityService.checkAvailability(availabilityRequest)
         if (availabilityResponse.roomTypes.isNotEmpty()) {
-            var reservationRooms = mutableListOf<ReservationRoom>()
+            val reservationRooms = mutableListOf<ReservationRoom>()
             request.roomTypes.forEach { roomRequest ->
                 run {
                     val availableRoomType =
@@ -51,14 +57,15 @@ class ReservationService @Autowired constructor(
                         reservationRepository.save(reservation)
                         reservationRoomRepository.saveAll(reservationRooms)
                         return ReservationResponseDTO(reservation)
-                    }
+
+                    } ?: throw ReservationNoAvailabilityException()
 
                 }
             }
 
         }
-        logger.error("No available")
-        throw Exception()
+        logger.error("No availability for reservation request: $request")
+        throw ReservationNoAvailabilityException()
     }
 
     private fun createReservation(reservationRequest: ReservationRequestDTO,
@@ -72,7 +79,10 @@ class ReservationService @Autowired constructor(
 
     }
 
-    private fun createReservationRoom(availabilityRoomTypeDTO: AvailabilityRoomTypeDTO, roomRequest: RoomTypeRequestDTO): ReservationRoom {
+    private fun createReservationRoom(
+            availabilityRoomTypeDTO: AvailabilityRoomTypeDTO,
+            roomRequest: RoomTypeRequestDTO
+    ): ReservationRoom {
         return ReservationRoom(availabilityRoomTypeDTO.amount,
                 roomRequest.occupancy.adults,
                 roomRequest.occupancy.juniors,

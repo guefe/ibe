@@ -9,7 +9,7 @@ import java.math.BigDecimal
 import java.time.LocalDate
 
 data class AvailabilityResponseDTO(val startDate: LocalDate, val endDate: LocalDate) {
-    var roomTypes: MutableList<AvailabilityRoomTypeDTO> = mutableListOf()
+    var roomTypes: List<AvailabilityRoomTypeDTO> = listOf()
 }
 
 data class AvailabilityRoomTypeDTO(

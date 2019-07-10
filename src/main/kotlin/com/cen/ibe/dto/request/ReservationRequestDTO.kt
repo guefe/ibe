@@ -9,7 +9,11 @@ data class ReservationRequestDTO(
         val customerMail: String,
         val customerFullName: String,
         val roomTypes: List<RoomTypeRequestDTO>
-)
+) {
+    fun validate(): Boolean =
+            startDate.isAfter(LocalDate.now()) && startDate.isBefore(endDate) && roomTypes.isNotEmpty()
+
+}
 
 data class RoomTypeRequestDTO(
         val roomTypeCode: String,
